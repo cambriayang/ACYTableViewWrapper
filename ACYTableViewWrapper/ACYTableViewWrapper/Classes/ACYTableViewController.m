@@ -1,0 +1,25 @@
+//
+//  CAYTableViewController.m
+//  ACYTableViewWrapper
+//
+//  Created by yeyang on 16/9/18.
+//  Copyright © 2016年 yeio. All rights reserved.
+//
+
+#import "ACYTableViewController.h"
+
+@interface ACYTableViewController ()
+
+@end
+
+@implementation ACYTableViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+@end
