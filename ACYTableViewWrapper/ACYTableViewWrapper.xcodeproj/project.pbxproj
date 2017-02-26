@@ -190,23 +190,23 @@
 		CA9C892F1E62B3C400D3FE2A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CA9C89401E62B3C400D3FE2A /* ACYTableViewWrapper.h */,
 				CA9C89301E62B3C400D3FE2A /* ACYBaseViewController.h */,
 				CA9C89311E62B3C400D3FE2A /* ACYBaseViewController.m */,
 				CA9C893A1E62B3C400D3FE2A /* ACYTableViewController.h */,
 				CA9C893B1E62B3C400D3FE2A /* ACYTableViewController.m */,
+				CA9C89381E62B3C400D3FE2A /* ACYTableView.h */,
+				CA9C89391E62B3C400D3FE2A /* ACYTableView.m */,
 				CA9C89321E62B3C400D3FE2A /* ACYNode.h */,
 				CA9C89331E62B3C400D3FE2A /* ACYNode.m */,
 				CA9C89341E62B3C400D3FE2A /* ACYTableRow.h */,
 				CA9C89351E62B3C400D3FE2A /* ACYTableRow.m */,
 				CA9C89361E62B3C400D3FE2A /* ACYTableSection.h */,
 				CA9C89371E62B3C400D3FE2A /* ACYTableSection.m */,
-				CA9C89381E62B3C400D3FE2A /* ACYTableView.h */,
-				CA9C89391E62B3C400D3FE2A /* ACYTableView.m */,
 				CA9C893C1E62B3C400D3FE2A /* ACYTableViewDataSource.h */,
 				CA9C893D1E62B3C400D3FE2A /* ACYTableViewDataSource.m */,
 				CA9C893E1E62B3C400D3FE2A /* ACYTableViewDelegateProxy.h */,
 				CA9C893F1E62B3C400D3FE2A /* ACYTableViewDelegateProxy.m */,
-				CA9C89401E62B3C400D3FE2A /* ACYTableViewWrapper.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
