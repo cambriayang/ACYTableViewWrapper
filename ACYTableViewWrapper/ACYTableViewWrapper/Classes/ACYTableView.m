@@ -12,7 +12,8 @@
 
 @interface ACYTableView ()
 
-@property(nonatomic, strong) ACYTableViewDelegateProxy *delegateProxy;
+@property (nonatomic, strong) ACYTableViewDelegateProxy *delegateProxy;
+@property (nonatomic, strong) UIView *emptyView;
 
 @end
 
@@ -23,6 +24,12 @@
     
     if (self) {
         self.separatorColor = [UIColor lightGrayColor];
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
+        
+        [self addSubview:_emptyView];
+        
+        _emptyView.backgroundColor = [UIColor blueColor];
+        _emptyView.hidden = YES;
     }
     return self;
 }
@@ -52,9 +59,27 @@
 }
 
 - (void)addEmptyTableViewFooterView {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, CGFLOAT_MIN)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGFLOAT_MIN)];
     
     self.tableFooterView = view;
+}
+
+- (void)setEmptyView:(UIView *)emptyView {
+    _emptyView = emptyView;
+    
+    [self addSubview:_emptyView];
+}
+
+- (void)showEmptyView {
+    if (_emptyView && _emptyView.hidden) {
+        _emptyView.hidden = NO;
+    }
+}
+
+- (void)hideEmptyView {
+    if (_emptyView && !_emptyView.hidden) {
+        _emptyView.hidden = YES;
+    }
 }
 
 @end

@@ -12,10 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ACYTableView : UITableView
 
-/**
- *  Add an empty table view footer view so that no more seperator line after the content is over
- */
-- (void)addEmptyTableViewFooterView;
+- (void)setEmptyView:(UIView *)emptyView;
+- (void)showEmptyView;
+- (void)hideEmptyView;
 
 @end
 
