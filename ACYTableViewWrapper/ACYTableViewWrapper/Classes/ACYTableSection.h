@@ -86,6 +86,8 @@ typedef NS_ENUM (NSUInteger, ACYTableSectionContentType) {
 
 - (NSUInteger)section;
 
+- (void)loadDataIfneeded;
+
 @end
 
 NS_ASSUME_NONNULL_END

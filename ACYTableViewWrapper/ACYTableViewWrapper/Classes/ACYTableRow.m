@@ -93,7 +93,7 @@
     if (self.selectRowEvent) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
-        self.selectRowEvent(self, cell, indexPath);
+        self.selectRowEvent(tableView, self, cell, indexPath);
     }
 }
 
