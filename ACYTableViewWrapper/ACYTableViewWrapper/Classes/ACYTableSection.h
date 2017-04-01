@@ -37,6 +37,10 @@ typedef NS_ENUM (NSUInteger, ACYTableSectionContentType) {
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithCustomView:(UIView *)customView;
 
+- (void)setTitle:(NSString *)title;
+- (void)setImage:(UIImage *)image;
+- (void)setCustomView:(UIView *)customView;
+
 /**
  *  Convinent Initializer
  *

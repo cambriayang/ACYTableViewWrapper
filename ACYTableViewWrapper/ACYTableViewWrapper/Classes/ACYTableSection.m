@@ -42,11 +42,7 @@
     self = [super init];
     
     if (self) {
-        [self commonInit];
-        self.content = title;
-        self.contentType = ACYTableSectionContentTypeTitle;
-        self.headerHeight = title.length == 0 ? CGFLOAT_MIN : 32.0;
-        self.title = title;
+        [self setTitle:title];
     }
     return self;
 }
@@ -54,10 +50,7 @@
 - (instancetype)initWithImage:(UIImage *)image {
     self = [super init];
     if (self) {
-        self.content = image;
-        self.contentType = ACYTableSectionContentTypeImage;
-        self.headerHeight = image.size.height;
-        [self commonInit];
+        [self setImage:image];
     }
     return self;
 }
@@ -65,16 +58,7 @@
 - (instancetype)initWithCustomView:(UIView *)customView {
     self = [super init];
     if (self) {
-        UITableViewHeaderFooterView *headerView = [[UITableViewHeaderFooterView alloc] init];
-        
-        customView.frame = headerView.contentView.frame;
-        
-        [headerView.contentView addSubview:customView];
-        
-        self.content = headerView;
-        self.contentType = ACYTableSectionContentTypeCustomView;
-        self.headerHeight = CGRectGetHeight(customView.frame);
-        [self commonInit];
+        [self setCustomView:customView];
     }
     return self;
 }
@@ -82,6 +66,34 @@
 - (void)commonInit {
     self.headerHeight = CGFLOAT_MIN;
     self.footerHeight = CGFLOAT_MIN;
+}
+
+- (void)setTitle:(NSString *)title {
+    [self commonInit];
+    self.content = title;
+    self.contentType = ACYTableSectionContentTypeTitle;
+    self.headerHeight = title.length == 0 ? CGFLOAT_MIN : 32.0;
+    _title = title;
+}
+
+- (void)setImage:(UIImage *)image {
+    self.content = image;
+    self.contentType = ACYTableSectionContentTypeImage;
+    self.headerHeight = image.size.height;
+    [self commonInit];
+}
+
+- (void)setCustomView:(UIView *)customView {
+    UITableViewHeaderFooterView *headerView = [[UITableViewHeaderFooterView alloc] init];
+    
+    headerView.contentView.frame = customView.frame;
+    
+    [headerView.contentView addSubview:customView];
+    
+    self.content = headerView;
+    self.contentType = ACYTableSectionContentTypeCustomView;
+    self.headerHeight = CGRectGetHeight(customView.frame);
+    [self commonInit];
 }
 
 #pragma mark --- Header & Footer

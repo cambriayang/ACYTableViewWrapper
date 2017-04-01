@@ -38,9 +38,7 @@
 
 - (void)setChildren:(NSArray <__kindof ACYNode *> *)children {
     if ([children isKindOfClass:[NSArray class]]) {
-        if (!_children) {
-            _children = [NSMutableArray array];
-        }
+        _children = [NSMutableArray array];
         
         _unmutableChildren = [_children copy];
         
