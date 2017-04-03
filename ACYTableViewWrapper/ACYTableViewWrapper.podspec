@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ACYTableViewWrapper"
-  s.version      = "1.1.0"
+  s.version      = "1.1.1"
   s.summary      = "A wrapper of ACYTableViewWrapper."
 
   # This description is used to generate tags and improve search results.
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/cambriayang/ACYTableViewWrapper.git", :tag => "1.1.0" }
+  s.source       = { :git => "https://github.com/cambriayang/ACYTableViewWrapper.git", :tag => "1.1.1" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
