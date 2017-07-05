@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		242AA29F1E640C4300865A8C /* DemoTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 242AA29E1E640C4300865A8C /* DemoTableSection.m */; };
+		24EE75621F0D05E4000885DF /* ACYLoadingMoreRetryRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EE755D1F0D05E4000885DF /* ACYLoadingMoreRetryRow.m */; };
+		24EE75631F0D05E4000885DF /* ACYLoadingMoreRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EE755F1F0D05E4000885DF /* ACYLoadingMoreRow.m */; };
+		24EE75641F0D05E4000885DF /* ACYTableViewRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EE75611F0D05E4000885DF /* ACYTableViewRefreshView.m */; };
 		6AE5E2B6DF793349C3799568 /* libPods-ACYTableViewWrapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3BC86715D899877EB91E9E /* libPods-ACYTableViewWrapper.a */; };
 		CA9C88FE1E62B30900D3FE2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9C88FD1E62B30900D3FE2A /* main.m */; };
 		CA9C89011E62B30900D3FE2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CA9C89001E62B30900D3FE2A /* AppDelegate.m */; };
@@ -49,6 +52,12 @@
 /* Begin PBXFileReference section */
 		242AA29D1E640C4300865A8C /* DemoTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTableSection.h; sourceTree = "<group>"; };
 		242AA29E1E640C4300865A8C /* DemoTableSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTableSection.m; sourceTree = "<group>"; };
+		24EE755C1F0D05E4000885DF /* ACYLoadingMoreRetryRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACYLoadingMoreRetryRow.h; sourceTree = "<group>"; };
+		24EE755D1F0D05E4000885DF /* ACYLoadingMoreRetryRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACYLoadingMoreRetryRow.m; sourceTree = "<group>"; };
+		24EE755E1F0D05E4000885DF /* ACYLoadingMoreRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACYLoadingMoreRow.h; sourceTree = "<group>"; };
+		24EE755F1F0D05E4000885DF /* ACYLoadingMoreRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACYLoadingMoreRow.m; sourceTree = "<group>"; };
+		24EE75601F0D05E4000885DF /* ACYTableViewRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACYTableViewRefreshView.h; sourceTree = "<group>"; };
+		24EE75611F0D05E4000885DF /* ACYTableViewRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACYTableViewRefreshView.m; sourceTree = "<group>"; };
 		2D3BC86715D899877EB91E9E /* libPods-ACYTableViewWrapper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ACYTableViewWrapper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		782EF932B2C219D41EFDC017 /* Pods-ACYTableViewWrapper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACYTableViewWrapper.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACYTableViewWrapper/Pods-ACYTableViewWrapper.release.xcconfig"; sourceTree = "<group>"; };
 		BFC26D4E9C23AD0636DCCD0B /* Pods-ACYTableViewWrapper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACYTableViewWrapper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACYTableViewWrapper/Pods-ACYTableViewWrapper.debug.xcconfig"; sourceTree = "<group>"; };
@@ -193,6 +202,12 @@
 		CA9C892F1E62B3C400D3FE2A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				24EE755C1F0D05E4000885DF /* ACYLoadingMoreRetryRow.h */,
+				24EE755D1F0D05E4000885DF /* ACYLoadingMoreRetryRow.m */,
+				24EE755E1F0D05E4000885DF /* ACYLoadingMoreRow.h */,
+				24EE755F1F0D05E4000885DF /* ACYLoadingMoreRow.m */,
+				24EE75601F0D05E4000885DF /* ACYTableViewRefreshView.h */,
+				24EE75611F0D05E4000885DF /* ACYTableViewRefreshView.m */,
 				CA9C89401E62B3C400D3FE2A /* ACYTableViewWrapper.h */,
 				CA9C89301E62B3C400D3FE2A /* ACYBaseViewController.h */,
 				CA9C89311E62B3C400D3FE2A /* ACYBaseViewController.m */,
@@ -425,12 +440,15 @@
 				CA9C89011E62B30900D3FE2A /* AppDelegate.m in Sources */,
 				CA9C89511E62B3CD00D3FE2A /* DemoTableRow.m in Sources */,
 				242AA29F1E640C4300865A8C /* DemoTableSection.m in Sources */,
+				24EE75641F0D05E4000885DF /* ACYTableViewRefreshView.m in Sources */,
+				24EE75631F0D05E4000885DF /* ACYLoadingMoreRow.m in Sources */,
 				CA9C89451E62B3C400D3FE2A /* ACYTableView.m in Sources */,
 				CA9C89521E62B3CD00D3FE2A /* DemoViewController.m in Sources */,
 				CA9C89431E62B3C400D3FE2A /* ACYTableRow.m in Sources */,
 				CA9C89441E62B3C400D3FE2A /* ACYTableSection.m in Sources */,
 				CA9C89471E62B3C400D3FE2A /* ACYTableViewDataSource.m in Sources */,
 				CA9C88FE1E62B30900D3FE2A /* main.m in Sources */,
+				24EE75621F0D05E4000885DF /* ACYLoadingMoreRetryRow.m in Sources */,
 				CA9C89411E62B3C400D3FE2A /* ACYBaseViewController.m in Sources */,
 				CA9C89421E62B3C400D3FE2A /* ACYNode.m in Sources */,
 				CA9C89461E62B3C400D3FE2A /* ACYTableViewController.m in Sources */,

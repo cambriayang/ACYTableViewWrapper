@@ -11,6 +11,8 @@
 #import "ACYTableViewDataSource.h"
 #import "ACYTableRow.h"
 #import "ACYTableSection.h"
+#import "ACYLoadingMoreRow.h"
+#import "ACYTableView.h"
 
 @interface ACYTableViewDelegateProxy ()
 
@@ -41,6 +43,8 @@
     BOOL retVal = NO;
     
     SEL selectors[] = {
+        @selector(scrollViewDidScroll:),
+        @selector(scrollViewDidEndDragging:willDecelerate:),
         @selector(tableView:heightForRowAtIndexPath:),
         @selector(tableView:didSelectRowAtIndexPath:),
         @selector(tableView:viewForHeaderInSection:),
@@ -58,7 +62,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     if (![self.target respondsToSelector:@selector(supportEstimatedHeight)]) {
-        selectors[10] = NULL;
+        selectors[12] = NULL;
     }
 #pragma clang diagnostic pop
     
@@ -93,9 +97,39 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
+        ACYTableView *table = (ACYTableView *)tableView;
+        
         id <ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
         ACYTableRow *row = [dataSource rowAtIndexPath:indexPath];
+    
+        CGFloat offsetY = table.contentOffset.y;
+        CGSize size = table.contentSize;
+        CGFloat judge = size.height - offsetY + 60 - SCREEN_HEIGHT;
+        
+        if ([row isKindOfClass:[ACYLoadingMoreRow class]]) {
+            UITableViewCell *cell = ((ACYLoadingMoreRow *)row).cell;
+
+            CGRect cellBounds = [cell convertRect:cell.bounds toView:nil];
+            
+            CGFloat offset = SCREEN_HEIGHT - cellBounds.origin.y;
+            
+            if (table.loadMore && offset < cell.height) {
+                table.loadMore(table, row);
+            }
+        } else if (judge <= 0) {
+            /*Because of ios bug. when you scroll very very fast, will display cell will not be the last one,
+             *so I control the offset & judge for myself to tell whether my table should load more.
+             *60 is the height of a ACYLoadingMoreRow
+             */
+            ACYTableRow *last = [[[dataSource allSections] lastObject] lastChild];
+            
+            if ([last isKindOfClass:[ACYLoadingMoreRow class]]) {
+                if (table.loadMore) {
+                    table.loadMore(table, last);
+                }
+            }
+        }
         
         if (row && [row respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
             [row tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
@@ -120,7 +154,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height = 60.0;
+    CGFloat height = RefreshViewHeight;
     
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
         id<ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
@@ -151,7 +185,7 @@
     } else if (self.target && [self.target respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
         retVal = [self.target tableView:tableView viewForHeaderInSection:section];
     }
-    
+    retVal.backgroundColor = [UIColor redColor];
     return retVal;
 }
 
@@ -243,6 +277,55 @@
         [tableSection tableView:tableView willDisplayFooterView:view forSection:section];
     } else {
         [self.target tableView:tableView willDisplayFooterView:view forSection:section];
+    }
+}
+
+//UIScrollView Delegate Processor
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if ([self.target respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)]) {
+        [self.target scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    }
+    
+    ACYTableView *tableView = (ACYTableView *)scrollView;
+    
+    if (tableView.contentOffset.y <= 0 && tableView.refresh) {
+        if (tableView.contentOffset.y <= -RefreshViewHeight && tableView.state != ACYTableViewStateRefreshLoading) {
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:0.2];
+            
+            tableView.contentInset = UIEdgeInsetsMake(RefreshViewHeight, 0.0f, 0.0f, 0.0f);
+            
+            [tableView setTableState:ACYTableViewStateRefreshLoading];
+            
+            tableView.refresh(tableView);
+            
+            [UIView commitAnimations];
+        } else if (tableView.contentOffset.y > -RefreshViewHeight && tableView.state != ACYTableViewStateNormal) {
+            [tableView setTableState:ACYTableViewStateNormal];
+        }
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if ([self.target respondsToSelector:@selector(scrollViewDidScroll:)]) {
+        [self.target scrollViewDidScroll:scrollView];
+    }
+    
+    ACYTableView *tableView = (ACYTableView *)scrollView;
+    
+    if (tableView.contentOffset.y <= 0 && tableView.refresh) {
+        if (tableView.state == ACYTableViewStateRefreshLoading) {
+            CGFloat offset = MAX(scrollView.contentOffset.y * -1, 0);
+            offset = MIN(offset, RefreshViewHeight);
+            
+            tableView.contentInset = UIEdgeInsetsMake(offset, 0, 0, 0);
+        } else if (tableView.isDragging) {
+            if (tableView.state == ACYTableViewStateRefreshLoading && tableView.contentOffset.y > -RefreshViewHeight) {
+                [tableView setTableState:ACYTableViewStateNormal];
+            } else if (tableView.state == ACYTableViewStateNormal && tableView.contentOffset.y <= -RefreshViewHeight) {
+                [tableView setTableState:ACYTableViewStateRefreshPulling];
+            }
+        }
     }
 }
 

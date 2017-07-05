@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param row
  * @param indexPath
  */
-typedef void (^SelectRowEvent) (UITableView *tableview, ACYTableRow *row, UITableViewCell *cell, NSIndexPath *indexPath);
+typedef void (^SelectRowEvent) (UITableView *tableView, ACYTableRow *row, UITableViewCell *cell, NSIndexPath *indexPath);
 
 @interface ACYTableRow : ACYNode
 

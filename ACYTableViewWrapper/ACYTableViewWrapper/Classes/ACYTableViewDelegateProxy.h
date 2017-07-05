@@ -13,9 +13,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Catch delegate method for `MVTableViewDataSource`
+ *  Catch delegate method for `ACYTableViewDataSource`
  */
-@interface ACYTableViewDelegateProxy : NSProxy <UITableViewDelegate>
+@interface ACYTableViewDelegateProxy : NSProxy <UITableViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, weak, nullable) id target;
 

@@ -17,5 +17,8 @@
 #import "ACYTableRow.h"
 #import "ACYTableViewDataSource.h"
 #import "ACYTableViewDelegateProxy.h"
+#import "ACYLoadingMoreRow.h"
+#import "ACYLoadingMoreRetryRow.h"
+#import "ACYTableViewRefreshView.h"
 
 #endif /* ACYTableViewWrapper_h */

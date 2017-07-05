@@ -57,23 +57,11 @@
 
 - (instancetype)initWithCustomView:(UIView *)customView {
     self = [super init];
+    
     if (self) {
-        [self setCustomView:customView];
+        [self setCustomeView:customView];
     }
     return self;
-}
-
-- (void)commonInit {
-    self.headerHeight = CGFLOAT_MIN;
-    self.footerHeight = CGFLOAT_MIN;
-}
-
-- (void)setTitle:(NSString *)title {
-    [self commonInit];
-    self.content = title;
-    self.contentType = ACYTableSectionContentTypeTitle;
-    self.headerHeight = title.length == 0 ? CGFLOAT_MIN : 32.0;
-    _title = title;
 }
 
 - (void)setImage:(UIImage *)image {
@@ -83,7 +71,16 @@
     [self commonInit];
 }
 
-- (void)setCustomView:(UIView *)customView {
+- (void)setTitle:(NSString *)title {
+    [self commonInit];
+    self.content = title;
+    self.contentType = ACYTableSectionContentTypeTitle;
+    self.headerHeight = title.length == 0 ? CGFLOAT_MIN : 32.0;
+    
+    _title = title;
+}
+
+- (void)setCustomeView:(UIView *)customView {
     UITableViewHeaderFooterView *headerView = [[UITableViewHeaderFooterView alloc] init];
     
     headerView.contentView.frame = customView.frame;
@@ -94,6 +91,11 @@
     self.contentType = ACYTableSectionContentTypeCustomView;
     self.headerHeight = CGRectGetHeight(customView.frame);
     [self commonInit];
+}
+
+- (void)commonInit {
+    self.headerHeight = CGFLOAT_MIN;
+    self.footerHeight = CGFLOAT_MIN;
 }
 
 #pragma mark --- Header & Footer
@@ -115,12 +117,43 @@
         }
         
         view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseIdentifier];
+        
         if (view == nil) {
             view = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:reuseIdentifier];
         }
         
-        view.textLabel.text = self.content;
+        if ([self.content isKindOfClass:[NSString class]]) {
+            view.textLabel.text = self.content;
+        } else if ([self.content isKindOfClass:[UIImage class]]) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:self.content];
+            
+            [view.contentView addSubview:imageView];
+        }
     }
+    
+    UIView *bView = [[UIView alloc] initWithFrame:view.bounds];
+    bView.backgroundColor = [UIColor clearColor];
+    
+    view.backgroundView = bView;
+    
+    return view;
+}
+
+- (UITableViewHeaderFooterView *)footerViewForTableView:(UITableView *)tableView section:(NSInteger)section {
+    UITableViewHeaderFooterView *view = nil;
+    
+    NSString *reuseIdentifier = @"footer";
+    
+    view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseIdentifier];
+    
+    if (view == nil) {
+        view = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:reuseIdentifier];
+    }
+    
+    UIView *bView = [[UIView alloc] initWithFrame:view.bounds];
+    bView.backgroundColor = [UIColor clearColor];
+    
+    view.backgroundView = bView;
     
     return view;
 }
@@ -138,7 +171,9 @@
 }
 
 - (UITableViewHeaderFooterView *)viewForFooterInTableView:(UITableView *)tableView section:(NSInteger)section {
-    return nil;
+    UITableViewHeaderFooterView *view = [self footerViewForTableView:tableView section:section];
+
+    return view;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {

@@ -39,8 +39,7 @@
 }
 
 - (NSString *)reuseIdentifier {
-   [NSException raise:NSObjectInaccessibleException format:@"==[The %s MUST be implemented by subclass]==", __FUNCTION__];
-    return nil;
+    return NSStringFromClass([self class]);
 }
 
 - (UITableViewCell *)createCellForAutoAdjustedTableViewCell {

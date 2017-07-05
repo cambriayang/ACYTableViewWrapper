@@ -92,7 +92,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self rowsInSection:section].count;
+    NSInteger count = [self rowsInSection:section].count;
+    
+    return count;
 }
 
 /**
@@ -133,9 +135,6 @@
         }
     }
     
-    // Add an extra point to the height to account for the cell separator, which is added between the bottom of the cell's contentView and the bottom of the table view cell.
-//    height += 1.0f;
-    
     //store the height
     row.cellHeight = height;
     
@@ -147,8 +146,16 @@
     
     ACYTableRow *tableRow = [[tableSection allRows] objectOrNilAtIndex:indexPath.row];
     
-    UITableViewCell *tableCell = [tableRow cellForTableView:tableView indexPath:indexPath];
+    /*Because of ios will display cell bug, reload data call will display, and will display will reload data.
+     *Some times indexPath.row will exceed datasourc. Generally bigger than datasource 1. Use lastobject is enough. 
+     *Or will return nil.
+     */
+    if (tableRow == nil) {
+        tableRow = [[tableSection allRows] lastObject];
+    }
     
+    UITableViewCell *tableCell = [tableRow cellForTableView:tableView indexPath:indexPath];
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
     [tableRow updateCell:tableCell indexPath:indexPath];
     
     return tableCell;
