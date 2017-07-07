@@ -105,7 +105,7 @@
     
         CGFloat offsetY = table.contentOffset.y;
         CGSize size = table.contentSize;
-        CGFloat judge = size.height - offsetY + 60 - SCREEN_HEIGHT;
+        CGFloat judge = size.height - offsetY + LoadMoreCellHeight - SCREEN_HEIGHT;
         
         if ([row isKindOfClass:[ACYLoadingMoreRow class]]) {
             UITableViewCell *cell = ((ACYLoadingMoreRow *)row).cell;
@@ -123,9 +123,15 @@
              *60 is the height of a ACYLoadingMoreRow
              */
             ACYTableRow *last = [[[dataSource allSections] lastObject] lastChild];
-            
+        
             if ([last isKindOfClass:[ACYLoadingMoreRow class]]) {
-                if (table.loadMore) {
+                UITableViewCell *cell = ((ACYLoadingMoreRow *)last).cell;
+                
+                CGRect cellBounds = [cell convertRect:cell.bounds toView:nil];
+                
+                CGFloat offset = SCREEN_HEIGHT - cellBounds.origin.y;
+                
+                if (table.loadMore && offset < cell.height) {
                     table.loadMore(table, last);
                 }
             }
@@ -185,7 +191,7 @@
     } else if (self.target && [self.target respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
         retVal = [self.target tableView:tableView viewForHeaderInSection:section];
     }
-    retVal.backgroundColor = [UIColor redColor];
+
     return retVal;
 }
 

@@ -40,6 +40,7 @@ tableView.separatorColor = [UIColor clearColor];\
 @class ACYTableView;
 
 static const CGFloat RefreshViewHeight = 60.0;
+static const CGFloat LoadMoreCellHeight = 60.0;
 static const CGFloat TableFooterHeight = 30.0;
 
 typedef void (^ACYTableViewLoadingMoreEvent) (ACYTableView *tableView, ACYTableRow *row);
