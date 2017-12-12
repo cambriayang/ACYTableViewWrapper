@@ -7,6 +7,9 @@
 //
 
 #import "ACYLoadingMoreRetryRow.h"
+#import <Masonry.h>
+#import "Utility.h"
+#import "LuCommonConstants.h"
 
 @interface ACYLoadingMoreRetryRow ()
 
@@ -95,7 +98,7 @@
     UILabel *lbl = [[UILabel alloc] init];
     
     lbl.text = @"数据异常，请点击重试";
-    lbl.textColor = [Utility colorWithHex:@"697D91"];
+    lbl.textColor = NORMAL_COLOR_1;
     lbl.font = [UIFont systemFontOfSize:15.0];
     
     [self.contentView addSubview:lbl];
@@ -116,7 +119,7 @@
     
     [self.contentView addSubview:activityView];
     
-    [activityView makeConstraints:^(MASConstraintMaker *make) {
+    [activityView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.contentView);
     }];
     

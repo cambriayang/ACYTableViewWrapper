@@ -7,6 +7,7 @@
 //
 
 #import "ACYLoadingMoreRow.h"
+#import <Masonry.h>
 
 @interface ACYLoadingMoreRow ()
 
@@ -77,7 +78,7 @@
 
     [self.contentView addSubview:activityView];
     
-    [activityView makeConstraints:^(MASConstraintMaker *make) {
+    [activityView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.contentView.mas_centerX);
         make.centerY.equalTo(self.contentView.mas_centerY);
     }];

@@ -39,7 +39,18 @@ typedef NS_ENUM (NSUInteger, ACYTableSectionContentType) {
 
 - (void)setTitle:(NSString *)title;
 - (void)setImage:(UIImage *)image;
+/**
+ *  Custom View is default the header of the section, as the setTitle & setImage
+ *  Section footer can be treated as a normal row, if you want set header & footer
+ *  use the setHeaderView & setFooterView. Or Actually you can use Normal Row as 
+ *  Footer(Recommended)
+ *
+ *  @return
+ */
 - (void)setCustomeView:(UIView *)customView;
+
+- (void)setHeaderView:(UIView *)customView;
+- (void)setFooterView:(UIView *)customView;
 
 /**
  *  Convinent Initializer
