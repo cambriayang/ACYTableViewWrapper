@@ -32,10 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  According the constraints set to the views, calculating the height for a cell
-
- @param indexPath
- @param tableView
- @return 
+ *
  */
 - (CGFloat)autoAdjustedCellHeightAtIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
 

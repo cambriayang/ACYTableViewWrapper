@@ -46,7 +46,8 @@
             [self addChild:node];
         }
     } else {
-        [_children removeAllObjects], _children = nil;
+        [_children removeAllObjects];
+        _children = nil;
         
         _unmutableChildren = nil;
     }
@@ -124,7 +125,8 @@
 
 - (void)removeAllChild {
     @synchronized (self) {
-        [_children removeAllObjects], _children = nil;
+        [_children removeAllObjects];
+        _children = nil;
         
         _unmutableChildren = nil;
     }

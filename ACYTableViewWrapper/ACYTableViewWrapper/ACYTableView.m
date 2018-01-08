@@ -14,8 +14,7 @@
 #import "ACYTableSection.h"
 #import "ACYLoadingMoreRetryRow.h"
 #import "ACYTableViewRefreshView.h"
-#import "Utility.h"
-#import <Masonry.h>
+#import <Masonry/Masonry.h>
 
 static const NSInteger RefreshViewTag = 0x88768f;
 static NSString * const DefaultTips = @"";
@@ -61,7 +60,7 @@ static NSString * const DefaultTips = @"";
         self.state = ACYTableViewStateNormal;
         self.bottomTips = DefaultTips;
         self.bottomViewHeight = TableFooterHeight;
-        self.moreViewBgColor = [Utility colorWithHex:@"EDF2F6"];
+        self.moreViewBgColor = [UIColor clearColor];
     }
     
     return self;
@@ -211,7 +210,7 @@ static NSString * const DefaultTips = @"";
     self.bottomViewHeight = height;
     
     lbl.font = [UIFont systemFontOfSize:13.0];
-    lbl.textColor = [Utility colorWithHex:@"acb4b9"];
+    lbl.textColor = [UIColor whiteColor];
     
     [lbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(view.mas_centerY);

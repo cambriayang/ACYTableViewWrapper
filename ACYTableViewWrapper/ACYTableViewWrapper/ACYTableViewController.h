@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 
 #import "ACYBaseViewController.h"
+#import "ACYTableView.h"
+#import "ACYTableViewDataSource.h"
 
 @interface ACYTableViewController : ACYBaseViewController
-
+@property (nonatomic, strong) ACYTableView *myTableView;
+@property (nonatomic, strong) ACYTableViewDataSource *dataSource;
 @end

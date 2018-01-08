@@ -12,6 +12,6 @@
 @protocol ACYTableRowCellTrack <NSObject>
 
 @optional
-- (void)trackWithRow:(ACYTableRow*)row indexPath:(NSIndexPath*)indexPath additionalInfo:(NSDictionary*)info;
+- (void)trackWithRow:(__kindofACYTableRow *)row indexPath:(NSIndexPath *)indexPath additionalInfo:(NSDictionary *)info;
 
 @end

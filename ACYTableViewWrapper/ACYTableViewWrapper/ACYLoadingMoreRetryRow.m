@@ -7,9 +7,7 @@
 //
 
 #import "ACYLoadingMoreRetryRow.h"
-#import <Masonry.h>
-#import "Utility.h"
-#import "LuCommonConstants.h"
+#import <Masonry/Masonry.h>
 
 @interface ACYLoadingMoreRetryRow ()
 
@@ -93,12 +91,12 @@
 }
 
 - (void)layoutViews {
-    self.backgroundColor = [Utility colorWithHex:@"EDF2F6"];
+    self.backgroundColor = [UIColor clearColor];
     
     UILabel *lbl = [[UILabel alloc] init];
     
     lbl.text = @"数据异常，请点击重试";
-    lbl.textColor = NORMAL_COLOR_1;
+    lbl.textColor = [UIColor lightGrayColor];
     lbl.font = [UIFont systemFontOfSize:15.0];
     
     [self.contentView addSubview:lbl];

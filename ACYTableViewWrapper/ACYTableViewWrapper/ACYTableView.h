@@ -43,8 +43,8 @@ static const CGFloat RefreshViewHeight = 60.0;
 static const CGFloat LoadMoreCellHeight = 60.0;
 static const CGFloat TableFooterHeight = 30.0;
 
-typedef void (^ACYTableViewLoadingMoreEvent) (ACYTableView *tableView, ACYTableRow *row);
-typedef void (^ACYTableViewRefreshEvent) (ACYTableView *tableView);
+typedef void (^ACYTableViewLoadingMoreEvent) (__kindof ACYTableView *tableView, __kindof ACYTableRow *row);
+typedef void (^ACYTableViewRefreshEvent) (__kindof ACYTableView *tableView);
 
 typedef NS_ENUM(NSUInteger, ACYTableViewState) {
     //Refresh State

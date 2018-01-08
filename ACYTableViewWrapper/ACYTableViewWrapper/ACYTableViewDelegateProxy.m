@@ -102,19 +102,18 @@
         id <ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
         ACYTableRow *row = [dataSource rowAtIndexPath:indexPath];
-    
+        
         CGFloat offsetY = table.contentOffset.y;
         CGSize size = table.contentSize;
         CGFloat judge = size.height - offsetY + LoadMoreCellHeight - table.bounds.size.height;
         
         if ([row isKindOfClass:[ACYLoadingMoreRow class]]) {
             UITableViewCell *cell = ((ACYLoadingMoreRow *)row).cell;
-
+            
             CGRect tableRect = [table convertRect:table.bounds toView:nil];
             CGRect cellBounds = [cell convertRect:cell.bounds toView:nil];
             
             CGFloat offset = CGRectGetMaxY(tableRect) - CGRectGetMinY(cellBounds);
-            
             if (table.loadMore && offset < CGRectGetHeight(cell.frame) && (table.state != ACYTableViewStateLoadMoreBegin && table.state != ACYTableViewStateRefreshPulling && table.state != ACYTableViewStateRefreshLoading)) {
                 [table setTableState:ACYTableViewStateLoadMoreBegin];
                 table.loadMore(table, row);
@@ -125,7 +124,7 @@
              *60 is the height of a ACYLoadingMoreRow
              */
             ACYTableRow *last = [[[dataSource allSections] lastObject] lastChild];
-        
+            
             if ([last isKindOfClass:[ACYLoadingMoreRow class]]) {
                 UITableViewCell *cell = ((ACYLoadingMoreRow *)last).cell;
                 
@@ -134,7 +133,7 @@
                 
                 CGFloat offset = CGRectGetMaxY(tableRect) - CGRectGetMinY(cellBounds);
                 
-                if (table.loadMore && offset < CGRectGetHeight(cell.frame) && (table.state != ACYTableViewStateLoadMoreBegin && table.state != ACYTableViewStateRefreshPulling && table.state != ACYTableViewStateRefreshLoading)) {
+                if (table.loadMore && offset >= CGRectGetHeight(cell.frame) && (table.state != ACYTableViewStateLoadMoreBegin && table.state != ACYTableViewStateRefreshPulling && table.state != ACYTableViewStateRefreshLoading)) {
                     [table setTableState:ACYTableViewStateLoadMoreBegin];
                     table.loadMore(table, last);
                 }

@@ -7,13 +7,12 @@
 //
 
 #import "ACYTableViewRefreshView.h"
-#import "CircleProgressBar.h"
-#import "Utility.h"
+//#import "CircleProgressBar.h"
 
 @interface ACYTableViewRefreshView ()
 
 @property (nonatomic, strong, readwrite) UILabel *titleView;
-@property (nonatomic, strong, readwrite) CircleProgressBar *dragingLoadingView;
+//@property (nonatomic, strong, readwrite) CircleProgressBar *dragingLoadingView;
 @property (nonatomic, strong, readwrite) UIImageView *circleView;
 @property (nonatomic, strong, readwrite) UIImageView *placeView;
 
@@ -40,18 +39,18 @@
     [self addSubview:maskView];
     self.clipsToBounds = NO;
     
-    maskView.backgroundColor = [Utility colorWithHex:@"EDF2F6"];
+    maskView.backgroundColor = [UIColor clearColor];
     
     maskView.frame = CGRectMake(0, -1000, self.frame.size.width, 1000);
     
-    self.backgroundColor = [Utility colorWithHex:@"EDF2F6"];
+    self.backgroundColor = [UIColor whiteColor];
     
     self.titleView = [[UILabel alloc] initWithFrame:CGRectMake((width - 200)/2.0 + 40, (height - 20)/2.0, 200, 20)];
     
     [self addSubview:self.titleView];
     
     self.titleView.text = @"值得信赖的投资理财平台";
-    self.titleView.textColor = [Utility colorWithHex:@"556677"];
+    self.titleView.textColor = [UIColor whiteColor];
     self.titleView.font = [UIFont systemFontOfSize:13.0];
     
     [self.titleView sizeToFit];
@@ -72,18 +71,18 @@
     
     [self startAnimation];
 
-    //Progress
-    self.dragingLoadingView = [[CircleProgressBar alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.titleView.frame) - 5 - 20, (height - 20)/2.0 - 2, 20, 20)];
-    
-    [self addSubview:self.dragingLoadingView];
-    
-    // Progress Bar Customization
-    [self.dragingLoadingView setProgressBarWidth:(1.0)];
-    [self.dragingLoadingView setStartAngle:-90];
-    [self.dragingLoadingView setProgressBarProgressColor:[Utility colorWithHex:@"7391FA"]];
-    [self.dragingLoadingView setProgressBarTrackColor:[UIColor clearColor]];
-    [self.dragingLoadingView setProgress:0 animated:YES];
-    [self.dragingLoadingView setBackgroundColor:[UIColor clearColor]];
+//    //Progress
+//    self.dragingLoadingView = [[CircleProgressBar alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.titleView.frame) - 5 - 20, (height - 20)/2.0 - 2, 20, 20)];
+//
+//    [self addSubview:self.dragingLoadingView];
+//
+//    // Progress Bar Customization
+//    [self.dragingLoadingView setProgressBarWidth:(1.0)];
+//    [self.dragingLoadingView setStartAngle:-90];
+//    [self.dragingLoadingView setProgressBarProgressColor:[Utility colorWithHex:@"7391FA"]];
+//    [self.dragingLoadingView setProgressBarTrackColor:[UIColor clearColor]];
+//    [self.dragingLoadingView setProgress:0 animated:YES];
+//    [self.dragingLoadingView setBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)startAnimation {
@@ -112,7 +111,7 @@
 }
 
 - (void)setProgress:(CGFloat)progress animated:(BOOL)animated {
-    [self.dragingLoadingView setProgress:progress animated:animated];
+//    [self.dragingLoadingView setProgress:progress animated:animated];
 }
 
 @end

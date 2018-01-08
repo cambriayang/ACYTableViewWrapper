@@ -23,10 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The Click Event, you can also use didSelect method for process events intensively
  *
- * @param row
- * @param indexPath
  */
-typedef void (^SelectRowEvent) (UITableView *tableView, ACYTableRow *row, UITableViewCell *cell, NSIndexPath *indexPath);
+typedef void (^SelectRowEvent) (__kindof UITableView *tableView, __kindof ACYTableRow *row, __kindof UITableViewCell *cell, NSIndexPath *indexPath);
 
 @interface ACYTableRow : ACYNode
 
@@ -36,7 +34,6 @@ typedef void (^SelectRowEvent) (UITableView *tableView, ACYTableRow *row, UITabl
 /**
  *  return 'YES' if you want autojust cell height, strongly recommended(with autolayout)
  *
- *  @return 
  */
 - (BOOL)autoAdjustCellHeight;
 
@@ -70,8 +67,6 @@ typedef void (^SelectRowEvent) (UITableView *tableView, ACYTableRow *row, UITabl
 /**
  Do the specific things for cell
  *
- * @param cell
- * @param indexPath
  */
 - (void)updateCell:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath;
 
