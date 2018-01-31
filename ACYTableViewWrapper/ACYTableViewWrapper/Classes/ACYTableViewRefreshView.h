@@ -12,9 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ACYTableViewRefreshView : UIView
 
-@property (nonatomic, strong, readonly) UIImageView *arrowView;
-@property (nonatomic, strong, readonly) UIImageView *titleView;
-@property (nonatomic, strong, readonly) UIActivityIndicatorView *activityView;
+@property (nonatomic, strong, readonly) UILabel *titleView;
+@property (nonatomic, strong, readonly) UIImageView *circleView;
+
+- (void)setProgress:(CGFloat)progress animated:(BOOL)animated;
+- (void)startAnimation;
 
 @end
 

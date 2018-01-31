@@ -7,6 +7,7 @@
 //
 
 #import "ACYLoadingMoreRow.h"
+#import <Masonry/Masonry.h>
 
 @interface ACYLoadingMoreRow ()
 
@@ -53,6 +54,8 @@
 @interface ACYLoadingMoreCell ()
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
+@property (nonatomic, strong) UIImageView *loadingView;
+@property (strong,nonatomic) CABasicAnimation *ani;
 
 @end
 
@@ -69,31 +72,55 @@
 }
 
 - (void)layoutViews {
-    self.backgroundColor = [UIColor clearColor];
+    UILabel *tipsLabel = [UILabel new];
     
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.contentView addSubview:tipsLabel];
     
-    [activityView startAnimating];
+    tipsLabel.text = @"正在努力加载";
+    tipsLabel.font = [UIFont boldSystemFontOfSize:12];
+    tipsLabel.textColor = [UIColor colorWithRed:(90)/255.0 green:(90)/255.0 blue:(90)/255.0 alpha:1.0];
+    tipsLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    tipsLabel.textAlignment = NSTextAlignmentCenter;
 
-    [self.contentView addSubview:activityView];
-    
-    [activityView makeConstraints:^(MASConstraintMaker *make) {
+    [tipsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.contentView.mas_centerX);
         make.centerY.equalTo(self.contentView.mas_centerY);
     }];
     
-    self.activityView = activityView;
+    tipsLabel.backgroundColor = [UIColor clearColor];
     
-    [self.activityView setHidesWhenStopped:YES];
+    self.backgroundColor = [UIColor clearColor];
     
-    self.activityView.hidden = NO;
+    if (_loadingView == nil) {
+        UIImage *image = [UIImage LSNFeedImagefromFrameName:@"lsu_feed_refresh_loading"];
+        UIImageView *loadingView = [[UIImageView alloc] initWithImage:image];
+        [self.contentView addSubview:_loadingView = loadingView];
+    }
+    
+    [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView.mas_centerY);
+        make.left.equalTo(tipsLabel.mas_right).offset(10);
+        make.size.mas_equalTo(CGSizeMake(12, 12));
+    }];
+    
+    [self.loadingView.layer addAnimation:self.ani forKey:nil];
+}
+
+- (CABasicAnimation *)ani{
+    if (!_ani) {
+        CABasicAnimation *animate = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+        animate.toValue = [NSNumber numberWithFloat:(2 * M_PI)];
+        animate.duration = 1.0f;
+        animate.repeatCount = 3000;
+        animate.removedOnCompletion = NO;
+        _ani = animate;
+    }
+    return _ani;
 }
 
 - (void)prepareForReuse {
-    [super prepareForReuse];
-    
-    self.activityView.hidden = NO;
-    [self.activityView startAnimating];
+    [super prepareForReuse];    
 }
+
 
 @end

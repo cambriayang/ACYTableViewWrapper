@@ -201,6 +201,12 @@
 }
 
 - (__kindof ACYNode *)objectAtIndex:(NSUInteger)idx {
+    if (idx > self.children.count) {
+        NSLog(@"You are out of bounds of an array");
+        
+        return nil;
+    }
+    
     return self.children[idx];
 }
 
