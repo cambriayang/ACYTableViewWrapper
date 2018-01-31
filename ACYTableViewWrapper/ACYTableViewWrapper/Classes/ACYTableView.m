@@ -14,10 +14,8 @@
 #import "ACYTableSection.h"
 #import "ACYLoadingMoreRetryRow.h"
 #import "ACYTableViewRefreshView.h"
-#import <Masonry/Masonry.h>
 
 static const NSInteger RefreshViewTag = 0x88768f;
-static NSString * const DefaultTips = @"";
 
 @interface ACYTableView ()
 
@@ -32,11 +30,8 @@ static NSString * const DefaultTips = @"";
 @property (nonatomic, assign, readwrite) NSUInteger currentPage;
 @property (nonatomic, copy, nonnull, readwrite) ACYTableViewLoadingMoreEvent loadMore;
 @property (nonatomic, copy, nonnull, readwrite) ACYTableViewRefreshEvent refresh;
+@property (nonatomic, strong) ACYTableViewRefreshView *refreshView;
 @property (nonatomic, assign) CGFloat contentOffsetY;
-@property (nonatomic, copy) NSString *bottomTips;
-@property (nonatomic, assign) CGFloat bottomViewHeight;
-@property (nonatomic, strong)UIColor *moreViewBgColor;
-@property (nonatomic, strong,readwrite) ACYTableViewRefreshView *refreshView;
 
 @end
 
@@ -58,36 +53,47 @@ static NSString * const DefaultTips = @"";
         self.refreshView = nil;
         self.contentOffsetY = 0.0;
         self.state = ACYTableViewStateNormal;
-        self.bottomTips = DefaultTips;
-        self.bottomViewHeight = TableFooterHeight;
-        self.moreViewBgColor = [UIColor clearColor];
     }
     
     return self;
 }
 
 - (void)setTableState:(ACYTableViewState)aStatus {
-    _state = aStatus;
-    
     switch (aStatus) {
         case ACYTableViewStateRefreshLoading:
-        {
-            self.refreshView.circleView.hidden = NO;
-            [self.refreshView setProgress:0 animated:YES];
-        }
+            [self.refreshView.activityView startAnimating];
+            
+            [CATransaction begin];
+            
+            [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+            self.refreshView.arrowView.hidden = YES;
+            
+            [CATransaction commit];
             break;
         case ACYTableViewStateNormal:
         case ACYTableViewStateLoadMoreFinish:
-        case ACYTableViewStateLoadMoreBegin:
-        {
-            self.refreshView.circleView.hidden = YES;
+            [self.refreshView.activityView stopAnimating];
+            
+            self.refreshView.arrowView.hidden = NO;
+            
+            [UIView beginAnimations:nil context:nil];
+            
             self.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
-        }
+            
+            [UIView setAnimationDuration:0.2f];
+            self.refreshView.arrowView.transform= CGAffineTransformIdentity;
+            
+            [UIView commitAnimations];
             break;
         case ACYTableViewStateRefreshPulling:
-        {
-            self.refreshView.circleView.hidden = YES;
-        }
+            self.refreshView.arrowView.hidden = NO;
+           
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.2f];
+            
+            self.refreshView.arrowView.transform= CGAffineTransformMakeRotation(-M_PI);
+            
+            [UIView commitAnimations];
             break;
         case ACYTableViewStateLoadMoreError: {
             ACYTableViewDataSource *ds = (ACYTableViewDataSource *)self.dataSource;
@@ -111,9 +117,7 @@ static NSString * const DefaultTips = @"";
                 
                 [ds removeChild:row];
                 
-                if (self.loadMore && (table.state != ACYTableViewStateLoadMoreBegin && table.state != ACYTableViewStateRefreshPulling && table.state != ACYTableViewStateRefreshLoading)) {
-                    [self setTableState:ACYTableViewStateLoadMoreBegin];
-                    
+                if (self.loadMore) {
                     self.loadMore(table, row);
                 }
             };
@@ -125,19 +129,12 @@ static NSString * const DefaultTips = @"";
         default:
             break;
     }
+    
+    _state = aStatus;
 }
 
 - (void)setTotalCount:(NSUInteger)totalCount pageSize:(NSUInteger)pageSize currentPage:(NSUInteger)currentPage {
-    if (totalCount <= 0 || pageSize <= 0) {
-        self.pageSize = -1;
-        self.totalCount = -1;
-        self.currentPage = -1;
-        self.totalPage = -1;
-        
-        NSLog(@"=[如果你需要LoadMore功能，请确保Total count和page size]=");
-        
-        return;
-    }
+    NSAssert(!(totalCount <= 0 || pageSize <= 0), @"=[如果你需要LoadMore功能，请确保Total count和page size]=");
     
     self.pageSize = pageSize;
     self.totalCount = totalCount;
@@ -160,12 +157,6 @@ static NSString * const DefaultTips = @"";
 
 - (void)setContentOffset:(CGPoint)contentOffset {
     [super setContentOffset:contentOffset];
-    if (self.state == ACYTableViewStateRefreshLoading) {
-        [self.refreshView setProgress:0 animated:YES];
-    } else if (self.state == ACYTableViewStateRefreshPulling || self.state == ACYTableViewStateNormal) {
-        CGFloat offset = (-self.contentOffset.y/60.0) >= 1.0 ? 1.0: (-self.contentOffset.y/60.0);
-        [self.refreshView setProgress:offset animated:YES];
-    }
 }
 
 - (void)setDelegate:(id<UITableViewDelegate, UIScrollViewDelegate>)delegate {
@@ -184,52 +175,25 @@ static NSString * const DefaultTips = @"";
     [super setDelegate:(id <UITableViewDelegate, UIScrollViewDelegate>)self.delegateProxy];
 }
 
-- (void)setNoMoreDataFooterView:(nullable NSString *)tips height:(CGFloat)height backGroudColor:(UIColor *)color {
-    self.moreViewBgColor = color;
-    UIView *view = [[UIView alloc] init];
+- (void)addNoMoreDataFooterView {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), TableFooterHeight)];
     
-    view.backgroundColor = self.moreViewBgColor;
+    view.backgroundColor = [Utility colorWithHex:@"EDF2F6"];
     
     UILabel *lbl = [[UILabel alloc] init];
     
     [view addSubview:lbl];
     
-    if (self.bottomTips.length > 0 && ([tips isEqualToString:DefaultTips])) {
-        lbl.text = self.bottomTips;
-    } else {
-        lbl.text = tips;
-    }
-    
-    if (self.bottomViewHeight > 0 && (self.bottomViewHeight != TableFooterHeight)) {
-        view.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), self.bottomViewHeight);
-    } else {
-        view.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), TableFooterHeight);
-    }
-    
-    self.bottomTips = tips;
-    self.bottomViewHeight = height;
-    
+    lbl.text = @"";
     lbl.font = [UIFont systemFontOfSize:13.0];
-    lbl.textColor = [UIColor whiteColor];
+    lbl.textColor = [Utility colorWithHex:@"697D91"];
     
     [lbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(view.mas_centerY);
         make.centerX.equalTo(view.mas_centerX);
     }];
-    
+        
     self.tableFooterView = view;
-}
-
-- (void)setNoMoreDataFooterView:(NSString *)tips height:(CGFloat)height {
-    [self setNoMoreDataFooterView:tips height:height backGroudColor:self.moreViewBgColor];
-}
-
-- (void)clearNoMoreDataFooterView {
-    self.tableFooterView = nil;
-}
-
-- (void)setNoMoreDataFooterView {
-    [self setNoMoreDataFooterView:DefaultTips height:self.bottomViewHeight];
 }
 
 - (void)setEmptyView:(UIView *)emptyView {
@@ -262,8 +226,6 @@ static NSString * const DefaultTips = @"";
         for (ACYTableSection *section in ds.allSections) {
             [section removeAllChild];
         }
-        
-        [self bringSubviewToFront:_emptyView];
     }
 }
 
@@ -287,7 +249,7 @@ static NSString * const DefaultTips = @"";
     ACYTableViewRefreshView *view = [self viewWithTag:RefreshViewTag];
     
     if (view == nil) {
-        self.refreshView = [[ACYTableViewRefreshView alloc] initWithFrame:CGRectMake(0, -RefreshViewHeight, [UIScreen mainScreen].bounds.size.width, RefreshViewHeight)];
+        self.refreshView = [[ACYTableViewRefreshView alloc] initWithFrame:CGRectMake(0, -RefreshViewHeight, SCREEN_WIDTH, RefreshViewHeight)];
         
         self.refreshView.tag = RefreshViewTag;
         
@@ -327,8 +289,6 @@ static NSString * const DefaultTips = @"";
                         self.currentPage++;
                     }
                 }
-    
-                [self clearNoMoreDataFooterView];
             } else {
                 //Has no more
                 if ([[[lastSection children] lastObject] isKindOfClass:[ACYLoadingMoreRow class]] || [[[lastSection children] lastObject] isKindOfClass:[ACYLoadingMoreRetryRow class]]) {
@@ -336,9 +296,7 @@ static NSString * const DefaultTips = @"";
                 }
                 
                 //Add nomore data footer
-                if (lastSection.children.count > 0) {
-                    [self setNoMoreDataFooterView];
-                }
+                [self addNoMoreDataFooterView];
             }
         }
     }

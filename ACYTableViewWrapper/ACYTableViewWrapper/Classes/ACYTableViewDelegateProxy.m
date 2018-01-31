@@ -102,20 +102,19 @@
         id <ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
         ACYTableRow *row = [dataSource rowAtIndexPath:indexPath];
-        
+    
         CGFloat offsetY = table.contentOffset.y;
         CGSize size = table.contentSize;
-        CGFloat judge = size.height - offsetY + LoadMoreCellHeight - table.bounds.size.height;
+        CGFloat judge = size.height - offsetY + LoadMoreCellHeight - SCREEN_HEIGHT;
         
         if ([row isKindOfClass:[ACYLoadingMoreRow class]]) {
             UITableViewCell *cell = ((ACYLoadingMoreRow *)row).cell;
-            
-            CGRect tableRect = [table convertRect:table.bounds toView:nil];
+
             CGRect cellBounds = [cell convertRect:cell.bounds toView:nil];
             
-            CGFloat offset = CGRectGetMaxY(tableRect) - CGRectGetMinY(cellBounds);
-            if (table.loadMore && offset < CGRectGetHeight(cell.frame) && (table.state != ACYTableViewStateLoadMoreBegin && table.state != ACYTableViewStateRefreshPulling && table.state != ACYTableViewStateRefreshLoading)) {
-                [table setTableState:ACYTableViewStateLoadMoreBegin];
+            CGFloat offset = SCREEN_HEIGHT - cellBounds.origin.y;
+            
+            if (table.loadMore && offset < cell.height) {
                 table.loadMore(table, row);
             }
         } else if (judge <= 0) {
@@ -124,17 +123,15 @@
              *60 is the height of a ACYLoadingMoreRow
              */
             ACYTableRow *last = [[[dataSource allSections] lastObject] lastChild];
-            
+        
             if ([last isKindOfClass:[ACYLoadingMoreRow class]]) {
                 UITableViewCell *cell = ((ACYLoadingMoreRow *)last).cell;
                 
-                CGRect tableRect = [table convertRect:table.bounds toView:nil];
                 CGRect cellBounds = [cell convertRect:cell.bounds toView:nil];
                 
-                CGFloat offset = CGRectGetMaxY(tableRect) - CGRectGetMinY(cellBounds);
+                CGFloat offset = SCREEN_HEIGHT - cellBounds.origin.y;
                 
-                if (table.loadMore && offset >= CGRectGetHeight(cell.frame) && (table.state != ACYTableViewStateLoadMoreBegin && table.state != ACYTableViewStateRefreshPulling && table.state != ACYTableViewStateRefreshLoading)) {
-                    [table setTableState:ACYTableViewStateLoadMoreBegin];
+                if (table.loadMore && offset < cell.height) {
                     table.loadMore(table, last);
                 }
             }
@@ -188,7 +185,7 @@
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
         id<ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
-        ACYTableSection *tableSection = [[dataSource allSections] objectOrNilAtIndex:section];
+        ACYTableSection *tableSection = [[dataSource allSections] objectAtIndex:section];
         
         retVal = [tableSection viewForHeaderInTableView:tableView section:section];
     } else if (self.target && [self.target respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
@@ -204,7 +201,7 @@
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
         id<ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
-        ACYTableSection *tableSection = [[dataSource allSections] objectOrNilAtIndex:section];
+        ACYTableSection *tableSection = [[dataSource allSections] objectAtIndex:section];
         
         retVal = [tableSection viewForFooterInTableView:tableView section:section];
     } else if (self.target && [self.target respondsToSelector:@selector(tableView:viewForFooterInSection:)]) {
@@ -220,7 +217,7 @@
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
         id<ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
-        ACYTableSection *tableSection = [[dataSource allSections] objectOrNilAtIndex:section];
+        ACYTableSection *tableSection = [[dataSource allSections] objectAtIndex:section];
         
         height = [tableSection heightForHeaderInTableView:tableView inSection:section];
     } else if (self.target && [self.target respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
@@ -236,7 +233,7 @@
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
         id<ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
-        ACYTableSection *tableSection = [[dataSource allSections] objectOrNilAtIndex:section];
+        ACYTableSection *tableSection = [[dataSource allSections] objectAtIndex:section];
         
         height = [tableSection heightForFooterInTableView:tableView inSection:section];
     } else if (self.target && [self.target respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
@@ -271,7 +268,7 @@
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
         id<ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
         
-        ACYTableSection *tableSection = [[dataSource allSections] objectOrNilAtIndex:section];
+        ACYTableSection *tableSection = [[dataSource allSections] objectAtIndex:section];
         
         [tableSection tableView:tableView willDisplayHeaderView:view forSection:section];
     } else if (self.target && [self.target respondsToSelector:@selector(tableView:willDisplayHeaderView:forSection:)]) {
@@ -282,7 +279,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section {
     if ([tableView.dataSource conformsToProtocol:@protocol(ACYTableViewDataSource)]) {
         id<ACYTableViewDataSource> dataSource = (id)tableView.dataSource;
-        ACYTableSection *tableSection = [[dataSource allSections] objectOrNilAtIndex:section];
+        ACYTableSection *tableSection = [[dataSource allSections] objectAtIndex:section];
         [tableSection tableView:tableView willDisplayFooterView:view forSection:section];
     } else {
         [self.target tableView:tableView willDisplayFooterView:view forSection:section];

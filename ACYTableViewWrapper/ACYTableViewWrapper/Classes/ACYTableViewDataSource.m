@@ -52,7 +52,7 @@
 }
 
 - (void)addSectionsFromArray:(NSArray <__kindof ACYTableSection *> *)array {
-    [self addChildFromArray:array];
+    [self addSectionsFromArray:array];
 }
 
 - (NSArray <ACYTableRow *> *)rowsInSection:(NSInteger)section {
@@ -155,12 +155,8 @@
     }
     
     UITableViewCell *tableCell = [tableRow cellForTableView:tableView indexPath:indexPath];
-    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
     [tableRow updateCell:tableCell indexPath:indexPath];
-    
-    if (tableCell == nil) {
-        tableCell = [[UITableViewCell alloc] init];
-    }
     
     return tableCell;
 }

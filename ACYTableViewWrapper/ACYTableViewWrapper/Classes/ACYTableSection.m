@@ -12,10 +12,9 @@
 
 @interface ACYTableSection ()
 
-@property (nonatomic, strong) id content;
-@property (nonatomic, assign) ACYTableSectionContentType contentType;
+@property(nonatomic, strong) id content;
+@property(nonatomic, assign) ACYTableSectionContentType contentType;
 @property (nonatomic, copy, nullable) NSString *title;
-@property (nonatomic, strong) UIView *sectionFooterView;
 
 @end
 
@@ -66,16 +65,14 @@
 }
 
 - (void)setImage:(UIImage *)image {
-    [self commonInit];
-    
     self.content = image;
     self.contentType = ACYTableSectionContentTypeImage;
     self.headerHeight = image.size.height;
+    [self commonInit];
 }
 
 - (void)setTitle:(NSString *)title {
     [self commonInit];
-    
     self.content = title;
     self.contentType = ACYTableSectionContentTypeTitle;
     self.headerHeight = title.length == 0 ? CGFLOAT_MIN : 32.0;
@@ -84,8 +81,6 @@
 }
 
 - (void)setCustomeView:(UIView *)customView {
-    [self commonInit];
-    
     UITableViewHeaderFooterView *headerView = [[UITableViewHeaderFooterView alloc] init];
     
     headerView.contentView.frame = customView.frame;
@@ -95,24 +90,7 @@
     self.content = headerView;
     self.contentType = ACYTableSectionContentTypeCustomView;
     self.headerHeight = CGRectGetHeight(customView.frame);
-}
-
-- (void)setHeaderView:(UIView *)customView {
-    [self setCustomeView:customView];
-}
-
-- (void)setFooterView:(UIView *)customView {
     [self commonInit];
-    
-    UITableViewHeaderFooterView *footerView = [[UITableViewHeaderFooterView alloc] init];
-    
-    footerView.contentView.frame = customView.frame;
-    
-    [footerView.contentView addSubview:customView];
-    
-    self.sectionFooterView = footerView;
-    self.contentType = ACYTableSectionContentTypeCustomView;
-    self.footerHeight = CGRectGetHeight(customView.frame);
 }
 
 - (void)commonInit {
@@ -121,22 +99,6 @@
 }
 
 #pragma mark --- Header & Footer
-- (UITableViewHeaderFooterView *)footerForTableView:(UITableView *)tableView {
-    UITableViewHeaderFooterView *view = nil;
-    
-    if (self.sectionFooterView && [self.sectionFooterView isKindOfClass:[UITableViewHeaderFooterView class]]) {
-        view = (UITableViewHeaderFooterView *)self.sectionFooterView;
-    }
-    
-    UIView *bView = [[UIView alloc] initWithFrame:view.bounds];
-    bView.backgroundColor = [UIColor clearColor];
-    
-    view.backgroundView = bView;
-    view.contentView.backgroundColor = [UIColor clearColor];
-    
-    return view;
-}
-
 - (UITableViewHeaderFooterView *)viewForTableView:(UITableView *)tableView {
     UITableViewHeaderFooterView *view = nil;
     
@@ -173,13 +135,25 @@
     bView.backgroundColor = [UIColor clearColor];
     
     view.backgroundView = bView;
-    view.contentView.backgroundColor = [UIColor clearColor];
     
     return view;
 }
 
 - (UITableViewHeaderFooterView *)footerViewForTableView:(UITableView *)tableView section:(NSInteger)section {
-    UITableViewHeaderFooterView *view = [self footerForTableView:tableView];
+    UITableViewHeaderFooterView *view = nil;
+    
+    NSString *reuseIdentifier = @"footer";
+    
+    view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseIdentifier];
+    
+    if (view == nil) {
+        view = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:reuseIdentifier];
+    }
+    
+    UIView *bView = [[UIView alloc] initWithFrame:view.bounds];
+    bView.backgroundColor = [UIColor clearColor];
+    
+    view.backgroundView = bView;
     
     return view;
 }

@@ -31,6 +31,7 @@ typedef NS_ENUM (NSUInteger, ACYTableSectionContentType) {
 /**
  *  Initialier set
  *
+ *  @return
  */
 - (instancetype)initWithTitle:(NSString *)title;
 - (instancetype)initWithImage:(UIImage *)image;
@@ -38,22 +39,13 @@ typedef NS_ENUM (NSUInteger, ACYTableSectionContentType) {
 
 - (void)setTitle:(NSString *)title;
 - (void)setImage:(UIImage *)image;
-/**
- *  Custom View is default the header of the section, as the setTitle & setImage
- *  Section footer can be treated as a normal row, if you want set header & footer
- *  use the setHeaderView & setFooterView. Or Actually you can use Normal Row as 
- *  Footer(Recommended)
- *
- */
 - (void)setCustomeView:(UIView *)customView;
-
-- (void)setHeaderView:(UIView *)customView;
-- (void)setFooterView:(UIView *)customView;
 
 /**
  *  Convinent Initializer
  *
  *
+ *  @return
  */
 + (ACYTableSection *)sectionWithTitle:(NSString *)title;
 + (ACYTableSection *)sectionWithImage:(UIImage *)image;
@@ -71,9 +63,11 @@ typedef NS_ENUM (NSUInteger, ACYTableSectionContentType) {
 
 - (nullable NSArray *)allRows;
 
+
 /**
  All rows will be reset, including exist ones
  *
+ * @param rows
  */
 - (void)setAllRows:(nullable NSArray <__kindof ACYNode *> *)rows;
 
@@ -83,12 +77,14 @@ typedef NS_ENUM (NSUInteger, ACYTableSectionContentType) {
 /**
  * Add row into exist ones
  *
+ * @param row
  */
-- (void)addRow:(nullable __kindof ACYTableRow *)row;
+- (void)addRow:(nullable ACYTableRow *)row;
 
 /**
  * Add rows into exist ones
  *
+ * @param array
  */
 - (void)addRowsFromArray:(nullable NSArray <__kindof ACYNode *> *)array;
 
