@@ -92,7 +92,7 @@
     self.backgroundColor = [UIColor clearColor];
     
     if (_loadingView == nil) {
-        UIImage *image = [UIImage LSNFeedImagefromFrameName:@"lsu_feed_refresh_loading"];
+        UIImage *image = [UIImage imageNamed:@"lsu_feed_refresh_loading"];
         UIImageView *loadingView = [[UIImageView alloc] initWithImage:image];
         [self.contentView addSubview:_loadingView = loadingView];
     }
